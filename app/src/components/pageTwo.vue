@@ -1,7 +1,10 @@
 <template>
   <div>
-    <h1>{{ msg }}</h1>
-    <button v-on:click = "start">Not gay</button>
+    <img src="@/assets/cutOut.svg">
+    <div>
+      <h1>{{ msg }}</h1>
+      <button v-on:click = "start">Back</button>
+    </div>
   </div>
 </template>
 
@@ -10,20 +13,31 @@
     name: 'pageTwo',
     data: () => {
       return {
-        msg: "tHIS IS Page Two"
+        msg: "This is Page Two"
       }
     },
     methods: {
       start: function(){
-        this.$emit("openPage", {
-          pageNumber: 1
-        })
+        this.$emit("openPage", 1)
       }
     }
   }
 </script>
 
-<style lang="stylus">
-  h1
-    color: red
+<style lang="stylus" scoped>
+  div
+    h1
+      color: black
+
+    img
+      position: absolute
+      margin-top: 0
+      top: @margin-top
+      z-index:-1
+
+    div:nth-child(2)
+      margin-top: 20vh
+      display: flex
+      align-items: center
+      flex-direction: column
 </style>

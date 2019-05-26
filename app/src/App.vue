@@ -26,8 +26,8 @@ export default {
     }
   },
   methods: {
-    changePage: function(pageData){
-      this.currentPage = pageData.pageNumber
+    changePage: function(pageNumber){
+      this.currentPage = pageNumber
     }
   }
 }
