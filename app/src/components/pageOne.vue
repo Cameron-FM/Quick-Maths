@@ -13,7 +13,7 @@
     name: 'pageOne',
     data: () => {
       return {
-        msg: "This is Page One"
+        msg: "Quick Maths"
       }
     },
     methods: {
@@ -26,8 +26,21 @@
 
 <style lang="stylus" scoped>
   div
-    h1
+    h1, button
       color: black
+      font-family: 'Oxygen', sans-serif
+      font-size: 42px
+
+    button
+      font-size: 22px
+      padding-bottom: 4px
+      outline: none
+      width: 130px
+      height: 55px
+      background: white
+      border-color: orange
+      border-radius: 6px
+      box-shadow: 1px 6px 8px 1px grey
 
     img
       position: absolute
@@ -36,7 +49,7 @@
       z-index: -1
 
     div:nth-child(2)
-      margin-top: 20vh
+      margin-top: 37vh
       display: flex
       align-items: center
       flex-direction: column

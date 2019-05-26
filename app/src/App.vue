@@ -7,18 +7,24 @@
     <template v-if="currentPage === 2">
       <pageTwo @openPage = "changePage"/>
     </template>
+
+    <template v-if="currentPage === 3">
+      <pageThree @openPage = "changePage"/>
+    </template>
   </div>
 </template>
 
 <script>
 import pageOne from './components/pageOne'
 import pageTwo from './components/pageTwo'
+import pageThree from './components/pageThree'
 
 export default {
   name: 'app',
   components: {
     pageOne,
-    pageTwo
+    pageTwo,
+    pageThree
   },
   data: () => {
     return {

@@ -1,9 +1,13 @@
 <template>
   <div>
     <img src="@/assets/cutOut.svg">
+    <button class="backBtn" v-on:click = "back"><i class="material-icons">{{icon}}</i></button>
     <div>
-      <h1>{{ msg }}</h1>
-      <button v-on:click = "start">Back</button>
+      <ol>
+        <li v-for="difficulty in difficulties">
+          <button class="diffBtn" v-on:click = "Easy"> {{difficulty.text}} </button>
+        </li>
+      </ol>
     </div>
   </div>
 </template>
@@ -13,12 +17,17 @@
     name: 'pageTwo',
     data: () => {
       return {
-        msg: "This is Page Two"
+        icon: "arrow_back_ios",
+        difficulties : [
+          {text: 'Easy'}, {text: 'Medium'}, {text: 'Hard'}]
       }
     },
     methods: {
-      start: function(){
+      back: function(){
         this.$emit("openPage", 1)
+      },
+      Easy: function(){
+        this.$emit("openPage", 3)
       }
     }
   }
@@ -26,17 +35,42 @@
 
 <style lang="stylus" scoped>
   div
-    h1
+    h1, button
       color: black
+      font-family: 'Oxygen', sans-serif
+
+    .backBtn
+      outline: none
+      background: white
+      font-size: 22px
+      border: none
+      padding-left: 10px
+      padding-top: 5px
+      text-shadow: 1px 2px 5px grey;
+
+    ol, li
+      padding: 0
+      list-style-type:none
+
+    .diffBtn
+      font-size: 22px
+      outline: none
+      background-color: white
+      margin-bottom: 30px
+      width: 250px
+      height: 50px
+      border-color: orange
+      border-radius: 6px
+      box-shadow: 1px 6px 8px 1px grey
 
     img
       position: absolute
       margin-top: 0
-      top: @margin-top
-      z-index:-1
+      top: 0
+      z-index: -1
 
-    div:nth-child(2)
-      margin-top: 20vh
+    div:nth-child(3)
+      margin-top: 30vh
       display: flex
       align-items: center
       flex-direction: column
