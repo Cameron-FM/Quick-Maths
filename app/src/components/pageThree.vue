@@ -4,13 +4,13 @@
     <button class="backBtn" v-on:click = "back"><i class="material-icons">{{icon}}</i></button>
 
     <div class="questionContainer">
-      <div class="questionText">"{{question}}"</div>
+      <div class="questionText">{{question}}</div>
     </div>
 
     <div class="optionBtnContainer">
       <ol>
         <li v-for="option in options">
-          <button class="optionBtn" v-on:click = "ay"> {{option.text}}</button>
+          <button class="optionBtn"> {{option.text}}</button>
         </li>
       </ol>
     </div>
@@ -23,11 +23,15 @@
 <script>
   export default{
     name: 'pageThree',
+    mounted(){
+      this.genQuestion()
+    },
+
     data: () => {
       return {
         icon: "arrow_back_ios",
-        symbols: ["+","-","/","*"],
-        question: "",
+        symbolArray: ["+","-","/","*"],
+        question: "x",
         answer: "",
         options : [
           {text: '20'},
@@ -37,20 +41,39 @@
       }
     },
 
-    computed: {
-      genQuestion() {
-        let question = Math.random(1,12), symbols[Math.random(0,3)], Math.random(1,12), "= ?"
-        return question
-      }
-    },
-
     methods: {
       back: function(){
-        this.$emit("openPage", 2)
-      }
+        this.$emit("openPage", 2);
+      },
+
+      randomNum: function(min,max){
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min)) + min;
+      },
+
+      randomSym: function(minIndex, maxIndex){
+        return this.symbolArray[this.randomNum(minIndex, maxIndex)];
+      },
+
+      genQuestion: function(){
+        let symbol = this.randomSym(0,3)
+        let firstNum = this.randomNum(2,13).toString()
+        if (symbol === this.symbolArray[1]){
+          this.question = firstNum + symbol + this.randomNum(0, firstNum).toString();
+        }else{
+          this.question = firstNum + " " + symbol + " " + this.randomNum(0, 13).toString();
+        }
+
+      },
+
+      //genNumber: function
+
     }
 
   }
+
+
 
 //Timer
 //random using number 1-12
@@ -89,8 +112,8 @@
 
       .questionText
         text-align: center
-        font-family: 'Oxygen', sans-serif
-        font-size: 48px
+        font-family:'IBM Plex Mono', monospace;
+        font-size: 40px
 
     .optionBtnContainer
       margin-top: 4vh
