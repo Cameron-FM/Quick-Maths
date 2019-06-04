@@ -9,13 +9,21 @@
 
     <div class="optionBtnContainer">
       <ol>
-        <li v-for="option in options">
-          <button class="optionBtn"> {{option.text}}</button>
+        <li v-for="ans in answerArray">
+          <button class="optionBtn" v-on:click="checkAnswer(ans)">{{ans}}</button>
         </li>
       </ol>
     </div>
 
-  </div>
+    <template v-if="msg">
+      <div class="messageContainer">
+        <div class="messageText">{{msg}}</div>
+      </div>
+
+      <div class="nextContainer">
+        <button class="nextBtn" v-on:click="refresh">Next</button>
+      </div>
+    </template>
 
   </div>
 </template>
@@ -24,29 +32,37 @@
   export default{
     name: 'pageThree',
     mounted(){
-      this.genQuestion()
+      this.genQuestion();
     },
 
     data: () => {
       return {
         icon: "arrow_back_ios",
         symbolArray: ["+","-","/","*"],
-        question: "x",
+        question: "",
         answer: "",
-        options : [
-          {text: '20'},
-          {text: '47'},
-          {text: '100'},
-          {text: '22'}]
+        answerArray: Array(3).fill(""),
+        mulitplier: 4,
+        msg: ""
       }
     },
 
     methods: {
+      //Emits to app.vue to change page
       back: function(){
-        this.$emit("openPage", 2);
+        this.$emit("openPage", 2)
       },
 
-      randomNum: function(min,max){
+      refresh: function(){
+        this.msg = ""
+        this.question = ""
+        this.answer  = ""
+        this.answerArray = [],
+        this.answerArray = Array(3).fill(""),
+        this.genQuestion()
+      },
+
+      randomNum: (min,max) => {
         min = Math.ceil(min);
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min)) + min;
@@ -56,21 +72,68 @@
         return this.symbolArray[this.randomNum(minIndex, maxIndex)];
       },
 
+      //Generates random question
       genQuestion: function(){
+        //Get a random symbol and number between 1 and 12
         let symbol = this.randomSym(0,3)
         let firstNum = this.randomNum(2,13).toString()
-        if (symbol === this.symbolArray[1]){
-          this.question = firstNum + symbol + this.randomNum(0, firstNum).toString();
+        //If the symbol is a '-'
+        if (symbol === this.symbolArray[1] || symbol === this.symbolArray[2]){
+          //Make the second number smaller, so a postive answer is produced
+          //Concatenate all components of the question
+          this.question = firstNum + symbol + this.randomNum(1, firstNum).toString();
         }else{
-          this.question = firstNum + " " + symbol + " " + this.randomNum(0, 13).toString();
+          //Else concatenate all components, with any number 1-12 as the second number
+          this.question = firstNum + " " + symbol + " " + this.randomNum(1, 13).toString();
         }
 
+        this.answer = Math.round(eval(this.question) * 10) / 10
+        this.createAnswers()
       },
 
-      //genNumber: function
+      //Creates alternative answer options
+      createAnswers: function(){
+        //Gets number of digits in the answer
+        let digitSize = this.answer.toString().length
+        let defaultVariant = 5
+        let symbol = this.randomSym(0, 2)
+        //If the answer > 1 digits
+        if (digitSize > 1){
+          //mulitply by the mulitplier and then by the digitSize
+          //Creates a balanced answer option
+          let defaultVariant = 5 * this.mulitplier * digitSize
+        }
+
+        //For the three alternative answer options
+        for (let i=0; i < 3; i++){
+          //Create and variant and new answer option
+          let variant = this.randomNum(1,defaultVariant+1);
+          let newAnswer = Math.round(eval(this.answer + symbol + this.randomNum(1,defaultVariant+1)) * 10) / 10
+          //Validates - Creates new, newAnswer untill it is > 0
+          while (symbol === this.symbolArray[1] || symbol === this.symbolArray[2] || newAnswer === this.answer || this.answerArray.includes(newAnswer)){
+            symbol = this.randomSym(0, 2)
+            newAnswer = Math.round(eval(this.answer + symbol + this.randomNum(1,defaultVariant+1)) * 10) / 10
+          }
+
+
+          //Push the randomly generated answer to answerArray
+          this.answerArray[i] = newAnswer
+        }
+        //Insert actual answer into random point in answerArray
+        this.answerArray.splice(this.randomNum(0, this.answerArray.length+1), 0, this.answer)
+      },
+
+      checkAnswer: function(ans){
+        if (ans === this.answer){
+          console.log("Correct!\nAnswer: ", this.answer)
+          this.msg = "Correct!\n   Answer is " + this.answer
+        }else{
+          console.log("Incorrect!\nAnswer: ", this.answer)
+          this.msg = "Incorrect!\n   Answer is " + this.answer
+        }
+      }
 
     }
-
   }
 
 
@@ -79,7 +142,6 @@
 //random using number 1-12
 //no negative numbers
 //No decimals
-
 
 </script>
 
@@ -108,7 +170,7 @@
       z-index: -1
 
     .questionContainer
-      margin-top: 22vh
+      margin-top: 17vh
 
       .questionText
         text-align: center
@@ -116,7 +178,6 @@
         font-size: 40px
 
     .optionBtnContainer
-      margin-top: 4vh
       display: flex
       align-items: center
       flex-direction: column
@@ -126,15 +187,41 @@
         list-style-type:none
 
         .optionBtn
-          margin-top: 0.5vh
+          margin-top: 3.5vh
           font-size: 22px
           outline: none
           background-color: white
-          margin-bottom: 25px
-          width: 250px
-          height: 50px
+          width: 200px
+          height: 45px
           border-color: orange
           border-radius: 6px
           box-shadow: 1px 6px 8px 1px grey
+
+    .messageContainer
+      margin-top: 3.5vh
+      display: flex
+      justify-content: center
+
+      .messageText
+        text-align: center
+        font-family: 'Oxygen', sans-serif
+        font-size: 22px
+
+    .nextContainer
+      display: flex
+      justify-content: center
+
+      .nextBtn
+        margin-top: 3vh
+        font-size: 20px
+        outline: none
+        background-color: white
+        margin-bottom: 25px
+        width: 150px
+        height: 40px
+        border-color: orange
+        border-radius: 6px
+        box-shadow: 1px 6px 8px 1px grey
+        text-align: center
 
 </style>
