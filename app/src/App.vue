@@ -15,6 +15,12 @@
     <template v-if="currentPage === 4">
       <pageFour @openPage = "changePage" @scoreEmitP3 = "changeScoreData" @questEmitP3 = "changeQuestData" :score="score" :questionNum="questionNum"/>
     </template>
+
+    <div class="feedbackContainer">
+      <p class="feedbackText">Please Give us Your Feeback!</p>
+      <a class="linkText"href="https://forms.gle/VSosFNrwhikZrcHD6" target="_blank">https://forms.gle/VSosFNrwhikZrcHD6</a>
+      <p class="versionText">v 0.1.0</p>
+    </div>
   </div>
 </template>
 
@@ -57,5 +63,24 @@ export default {
 </script>
 
 <style lang="stylus">
+  div
+    p
+      font-family: 'Oxygen', sans-serif
+
+    .feedbackContainer
+      margin-top: 20vh
+      display: flex
+      align-items: center
+      flex-direction: column
+
+      .feedbackText
+        font-size: 14px
+
+      .versionText, a
+        font-size: 10px
+
+      .versionText
+        color: grey
+
 
 </style>
