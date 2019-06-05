@@ -21,7 +21,7 @@
       </div>
 
       <div class="nextContainer">
-        <button class="nextBtn" v-on:click="refresh">Next</button>
+        <button class="nextBtn" v-on:click="checkGameFinshed">Next</button>
       </div>
     </template>
 
@@ -31,6 +31,8 @@
 <script>
   export default{
     name: 'pageThree',
+    props: ['score', 'questionNum'],
+
     mounted(){
       this.genQuestion();
     },
@@ -50,6 +52,8 @@
     methods: {
       //Emits to app.vue to change page
       back: function(){
+        this.$emit("scoreEmitP3", 0)
+        this.$emit("questEmitP3", 0)
         this.$emit("openPage", 2)
       },
 
@@ -58,8 +62,7 @@
         this.question = ""
         this.answer  = ""
         this.answerArray = [],
-        this.answerArray = Array(3).fill(""),
-        this.genQuestion()
+        this.answerArray = Array(3).fill("")
       },
 
       randomNum: (min,max) => {
@@ -124,19 +127,32 @@
       },
 
       checkAnswer: function(ans){
+        //Checks if answer is correct
         if (ans === this.answer){
           console.log("Correct!\nAnswer: ", this.answer)
-          this.msg = "Correct!\n   Answer is " + this.answer
+          this.msg = "Correct! Answer is " + this.answer
+          this.$emit("scoreEmitP3", this.score + 1)
         }else{
           console.log("Incorrect!\nAnswer: ", this.answer)
-          this.msg = "Incorrect!\n   Answer is " + this.answer
+          this.msg = "Incorrect! Answer is " + this.answer
+        }
+
+        //Increase the question number prop counter
+        this.$emit("questEmitP3", this.questionNum + 1)
+      },
+
+      checkGameFinshed: function(){
+        if (this.questionNum >=11){
+          this.refresh()
+          this.$emit("openPage", 4)
+        }else {
+          this.refresh()
+          this.genQuestion();
         }
       }
 
     }
   }
-
-
 
 //Timer
 //random using number 1-12
