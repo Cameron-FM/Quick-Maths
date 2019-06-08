@@ -2,6 +2,12 @@
   <div id="app">
     <template v-if="currentPage === 1">
       <pageOne @openPage = "changePage"/>
+
+      <div class="feedbackContainer">
+        <p class="feedbackText">Please Give us Your Feeback!</p>
+        <a class="linkText"href="https://forms.gle/VSosFNrwhikZrcHD6" target="_blank">https://forms.gle/VSosFNrwhikZrcHD6</a>
+        <p class="versionText">v 0.1.0</p>
+      </div>
     </template>
 
     <template v-if="currentPage === 2">
@@ -16,11 +22,6 @@
       <pageFour @openPage = "changePage" @scoreEmitP3 = "changeScoreData" @questEmitP3 = "changeQuestData" :score="score" :questionNum="questionNum"/>
     </template>
 
-    <div class="feedbackContainer">
-      <p class="feedbackText">Please Give us Your Feeback!</p>
-      <a class="linkText"href="https://forms.gle/VSosFNrwhikZrcHD6" target="_blank">https://forms.gle/VSosFNrwhikZrcHD6</a>
-      <p class="versionText">v 0.1.0</p>
-    </div>
   </div>
 </template>
 
