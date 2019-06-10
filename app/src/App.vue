@@ -43,7 +43,7 @@ export default {
     return {
       currentPage: 1,
       score: 0,
-      questionNum: 0
+      questionNum: 1
     }
   },
   methods: {

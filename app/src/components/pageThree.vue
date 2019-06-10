@@ -1,7 +1,20 @@
 <template>
   <div>
     <img src="@/assets/cutOut.svg">
-    <button class="backBtn" v-on:click = "back"><i class="material-icons">{{icon}}</i></button>
+    <button class="backBtn" v-on:click = "back"><i class="material-icons">{{icons[0]}}</i></button>
+
+    <div class="infoContainer">
+      <i class="material-icons">{{icons[2]}}</i>
+      <div class="questionInfo">{{questionNum}}</div>
+    </div>
+
+    <div class="timerContainer">
+      <i class="material-icons">{{icons[1]}}</i>
+
+      <div class="timerLineContainer">
+        <div class="timerLine" v-bind:style="{height: timerHeight}"></div>
+      </div>
+    </div>
 
     <div class="questionContainer">
       <div class="questionText">{{question}}</div>
@@ -39,14 +52,17 @@
 
     data: () => {
       return {
-        icon: "arrow_back_ios",
+        icons: ["arrow_back_ios", "alarm", "question_answer"],
         symbolArray: ["+","-","/","*"],
         question: "",
         answer: "",
         answerArray: Array(3).fill(""),
         mulitplier: 4,
         msg: "",
-        timerCount: 10,
+        startTime: 5,
+        timerCount: 0,
+        timerHeight: "0%",
+        timerPercent: 0
       }
     },
 
@@ -64,6 +80,11 @@
         this.answer  = ""
         this.answerArray = [],
         this.answerArray = Array(3).fill("")
+
+        clearTimeout(this.timeout)
+        this.timerCount = 10
+        this.timerPercent =  0
+        this.timerHeight = this.timerPercent + "%"
       },
 
       randomNum: (min,max) => {
@@ -77,8 +98,10 @@
       },
 
       updateTimer: function(){
-        console.log(this.timerCount)
         this.timerCount-=1
+        this.timerPercent +=  100/this.startTime
+        this.timerHeight = this.timerPercent + "%"
+
         if (this.timerCount === 0){
           clearTimeout(this.timeout)
           this.timerCount = 10
@@ -89,6 +112,7 @@
 
       startCountdown: function(){
         this.timeout = setInterval(()=>this.updateTimer(), 1000)
+        this.timerCount = this.startTime
       },
 
       //Generates random question
@@ -153,16 +177,13 @@
           console.log("Incorrect!\nAnswer: ", this.answer)
           this.msg = "Incorrect! Answer is " + this.answer
         }
-
-        //Increase the question number prop counter
-        this.$emit("questEmitP3", this.questionNum + 1)
       },
 
       checkGameFinshed: function(){
-        clearTimeout(this.timeout)
-        this.timerCount = 10
+        //Increase the question number prop counter
+        this.$emit("questEmitP3", this.questionNum + 1)
 
-        if (this.questionNum >=10){
+        if (this.questionNum === 10){
           this.refresh()
           this.$emit("openPage", 4)
         }else {
@@ -204,6 +225,48 @@
       margin-top: 0
       top: 0
       z-index: -1
+
+    .infoContainer
+      position: absolute
+      display: flex
+      margin-top: 13vh
+      margin-left: 3vh
+      z-index: 2
+      align-items: center
+
+      .questionInfo
+        margin-left: 10px
+        font-size: 24
+        text-align: center
+        font-family: 'Oxygen', sans-serif
+        color: purple
+        font-weight: bold;
+
+
+    .timerContainer
+      position: absolute
+      display: flex
+      align-items: center
+      flex-direction: column
+      margin-top: 19vh
+      margin-left: 3vh
+      z-index: 2
+
+      .timerLineContainer
+        margin-top: 0.5vh
+        background-color: rgba(211,211,211, 0.5)
+        width: 5px
+        height: 45vh
+        border-bottom: 1px solid rgba(211,211,211, 0.5)
+        border-radius: 5px
+
+        .timerLine
+          transition: ease 0.5s
+          background-color: purple
+          width: 5px
+          height: 20%
+          border-bottom: 1px solid purple
+          border-radius: 5px
 
     .questionContainer
       margin-top: 17vh
