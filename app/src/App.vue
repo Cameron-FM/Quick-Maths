@@ -82,6 +82,4 @@ export default {
 
       .versionText
         color: grey
-
-
 </style>

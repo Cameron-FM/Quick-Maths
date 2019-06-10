@@ -45,7 +45,8 @@
         answer: "",
         answerArray: Array(3).fill(""),
         mulitplier: 4,
-        msg: ""
+        msg: "",
+        timerCount: 10,
       }
     },
 
@@ -75,6 +76,21 @@
         return this.symbolArray[this.randomNum(minIndex, maxIndex)];
       },
 
+      updateTimer: function(){
+        console.log(this.timerCount)
+        this.timerCount-=1
+        if (this.timerCount === 0){
+          clearTimeout(this.timeout)
+          this.timerCount = 10
+          this.$emit("questEmitP3", this.questionNum + 1)
+          this.msg = "You Ran Out of Time!"
+        }
+      },
+
+      startCountdown: function(){
+        this.timeout = setInterval(()=>this.updateTimer(), 1000)
+      },
+
       //Generates random question
       genQuestion: function(){
         //Get a random symbol and number between 1 and 12
@@ -91,6 +107,7 @@
         }
 
         this.answer = Math.round(eval(this.question) * 10) / 10
+        this.startCountdown()
         this.createAnswers()
       },
 
@@ -142,12 +159,15 @@
       },
 
       checkGameFinshed: function(){
+        clearTimeout(this.timeout)
+        this.timerCount = 10
+
         if (this.questionNum >=10){
           this.refresh()
           this.$emit("openPage", 4)
         }else {
           this.refresh()
-          this.genQuestion();
+          this.genQuestion()
         }
       }
 
