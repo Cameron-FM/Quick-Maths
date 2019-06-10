@@ -142,7 +142,7 @@
       },
 
       checkGameFinshed: function(){
-        if (this.questionNum >=11){
+        if (this.questionNum >=10){
           this.refresh()
           this.$emit("openPage", 4)
         }else {
