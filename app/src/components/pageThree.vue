@@ -129,6 +129,11 @@
         //Get a random symbol and number between 1 and 12
         let symbol = this.randomSym(0,3)
         let firstNum = this.randomNum(2,13).toString()
+        //Disable division for if playing on easy
+        if (this.difficulty === 0){
+          this.symbolArray.splice(2,1)
+          symbol = this.randomSym(0,2)
+        }
         //If the symbol is a '-'
         if (symbol === this.symbolArray[1] || symbol === this.symbolArray[2]){
           //Make the second number smaller, so a postive answer is produced
@@ -138,7 +143,6 @@
           //Else concatenate all components, with any number 1-12 as the second number
           this.question = firstNum + " " + symbol + " " + this.randomNum(1, 13).toString();
         }
-
         this.answer = Math.round(eval(this.question) * 10) / 10
         this.startCountdown()
         this.createAnswers()
@@ -197,10 +201,8 @@
       checkGameFinshed: function(){
         //Increase the question number prop counter
         this.$emit("questEmitP3", this.questionNum + 1)
-
         //Stops Timer
         clearTimeout(this.timeout)
-
         if (this.questionNum === 10){
           this.refresh()
           this.$emit("openPage", 4)
