@@ -182,9 +182,15 @@
           console.log("Correct!\nAnswer: ", this.answer)
           this.msg = "Correct! Answer is " + this.answer
           this.$emit("scoreEmitP3", this.score + 1)
+          //Play 'Success' Sound
+          new Audio(
+            "https://suraj.codes/dist/assets/cdn/audio/success.wav").play();
         }else{
           console.log("Incorrect!\nAnswer: ", this.answer)
           this.msg = "Incorrect! Answer is " + this.answer
+          //Play 'Fail' Sound
+          new Audio(
+            "https://suraj.codes/dist/assets/cdn/audio/fail.wav").play();
         }
       },
 
