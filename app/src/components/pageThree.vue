@@ -44,7 +44,7 @@
 <script>
   export default{
     name: 'pageThree',
-    props: ['score', 'questionNum'],
+    props: ['score', 'questionNum', 'difficulty'],
 
     mounted(){
       this.genQuestion();
@@ -59,7 +59,7 @@
         answerArray: Array(3).fill(""),
         mulitplier: 4,
         msg: "",
-        startTime: 5,
+        startTime: 0,
         timerCount: 0,
         timerHeight: "0%",
         timerPercent: 0
@@ -69,6 +69,8 @@
     methods: {
       //Emits to app.vue to change page
       back: function(){
+        clearTimeout(this.timeout)
+        this.refresh()
         this.$emit("scoreEmitP3", 0)
         this.$emit("questEmitP3", 0)
         this.$emit("openPage", 2)
@@ -80,9 +82,7 @@
         this.answer  = ""
         this.answerArray = [],
         this.answerArray = Array(3).fill("")
-
-        clearTimeout(this.timeout)
-        this.timerCount = 10
+        this.timerCount = 0
         this.timerPercent =  0
         this.timerHeight = this.timerPercent + "%"
       },
@@ -98,21 +98,30 @@
       },
 
       updateTimer: function(){
+        console.log(this.timerCount)
         this.timerCount-=1
         this.timerPercent +=  100/this.startTime
         this.timerHeight = this.timerPercent + "%"
 
-        if (this.timerCount === 0){
+        if (this.timerCount <= 0){
           clearTimeout(this.timeout)
-          this.timerCount = 10
+          this.timerCount = this.startTime
           this.$emit("questEmitP3", this.questionNum + 1)
           this.msg = "You Ran Out of Time!"
         }
       },
 
       startCountdown: function(){
-        this.timeout = setInterval(()=>this.updateTimer(), 1000)
-        this.timerCount = this.startTime
+        if (this.difficulty === 1){
+          this.startTime = 20
+          this.timerCount = this.startTime
+          this.timeout = setInterval(()=>this.updateTimer(), 1000)
+          //this.timeout = setInterval(()=>this.updateTimer(), 1000)
+        }else if (this.difficulty === 2){
+          this.startTime = 10
+          this.timerCount = this.startTime
+          this.timeout = setInterval(()=>this.updateTimer(), 1000)
+        }
       },
 
       //Generates random question
@@ -182,6 +191,9 @@
       checkGameFinshed: function(){
         //Increase the question number prop counter
         this.$emit("questEmitP3", this.questionNum + 1)
+
+        //Stops Timer
+        clearTimeout(this.timeout)
 
         if (this.questionNum === 10){
           this.refresh()

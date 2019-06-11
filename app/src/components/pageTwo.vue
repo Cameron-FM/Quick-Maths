@@ -5,7 +5,7 @@
     <div>
       <ol>
         <li v-for="difficulty in difficulties">
-          <button class="diffBtn" v-on:click = "Easy"> {{difficulty.text}} </button>
+          <button class="diffBtn" v-on:click = "nextPage(difficulty.text[1])"> {{difficulty.text[0]}} </button>
         </li>
       </ol>
     </div>
@@ -19,15 +19,16 @@
       return {
         icon: "arrow_back_ios",
         difficulties : [
-          {text: 'Easy'}, {text: 'Medium'}, {text: 'Hard'}]
+          {text: ['Easy', 0]}, {text: ['Medium', 1]}, {text: ['Hard', 2]}]
       }
     },
     methods: {
       back: function(){
         this.$emit("openPage", 1)
       },
-      Easy: function(){
+      nextPage: function(diff){
         this.$emit("openPage", 3)
+        this.$emit("emitDifficulty", diff)
       }
     }
   }
