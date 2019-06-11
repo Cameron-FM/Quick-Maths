@@ -4,6 +4,7 @@
     <div>
       <h1>{{ msg }}</h1>
       <button v-on:click = "start">Start</button>
+      <img src="https://suraj.codes/dist/images/success.png">
     </div>
   </div>
 </template>
@@ -49,8 +50,13 @@
       z-index: -1
 
     div:nth-child(2)
-      margin-top: 37vh
+      margin-top: 35vh
       display: flex
       align-items: center
       flex-direction: column
+
+      img
+        width: 300px
+        margin-top: 62vh
+
 </style>

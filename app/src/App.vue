@@ -2,12 +2,6 @@
   <div id="app">
     <template v-if="currentPage === 1">
       <pageOne @openPage = "changePage"/>
-
-      <div class="feedbackContainer">
-        <p class="feedbackText">Please Give us Your Feeback!</p>
-        <a class="linkText"href="https://forms.gle/VSosFNrwhikZrcHD6" target="_blank">https://forms.gle/VSosFNrwhikZrcHD6</a>
-        <p class="versionText">v 0.1.0</p>
-      </div>
     </template>
 
     <template v-if="currentPage === 2">
@@ -75,18 +69,4 @@ export default {
     p
       font-family: 'Oxygen', sans-serif
 
-    .feedbackContainer
-      margin-top: 20vh
-      display: flex
-      align-items: center
-      flex-direction: column
-
-      .feedbackText
-        font-size: 14px
-
-      .versionText, a
-        font-size: 10px
-
-      .versionText
-        color: grey
 </style>
