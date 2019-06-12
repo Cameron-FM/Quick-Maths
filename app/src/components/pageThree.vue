@@ -62,7 +62,7 @@
         startTime: 0,
         timerCount: 0,
         timerHeight: "0%",
-        timerPercent: 0
+        timerPercent: 0,
       }
     },
 
@@ -104,10 +104,11 @@
         this.timerHeight = this.timerPercent + "%"
 
         if (this.timerCount <= 0){
+          //Stops Timer
           clearTimeout(this.timeout)
           this.timerCount = this.startTime
-          this.$emit("questEmitP3", this.questionNum + 1)
           this.msg = "You Ran Out of Time!"
+
         }
       },
 
@@ -181,28 +182,32 @@
       },
 
       checkAnswer: function(ans){
-        //Checks if answer is correct
-        if (ans === this.answer){
-          console.log("Correct!\nAnswer: ", this.answer)
-          this.msg = "Correct! Answer is " + this.answer
-          this.$emit("scoreEmitP3", this.score + 1)
-          //Play 'Success' Sound
-          new Audio(
-            "https://suraj.codes/dist/assets/cdn/audio/success.wav").play();
-        }else{
-          console.log("Incorrect!\nAnswer: ", this.answer)
-          this.msg = "Incorrect! Answer is " + this.answer
-          //Play 'Fail' Sound
-          new Audio(
-            "https://suraj.codes/dist/assets/cdn/audio/fail.wav").play();
+        //Stops Timer
+        clearTimeout(this.timeout)
+
+        if (this.msg === ""){
+          //Checks if answer is correct
+          if (ans === this.answer){
+            console.log("Correct!\nAnswer: ", this.answer)
+            this.msg = "Correct! Answer is " + this.answer
+            this.$emit("scoreEmitP3", this.score + 1)
+            //Play 'Success' Sound
+            new Audio(
+              "https://suraj.codes/dist/assets/cdn/audio/success.wav").play();
+          }else{
+            console.log("Incorrect!\nAnswer: ", this.answer)
+            this.msg = "Incorrect! Answer is " + this.answer
+            //Play 'Fail' Sound
+            new Audio(
+              "https://suraj.codes/dist/assets/cdn/audio/fail.wav").play();
+          }
         }
       },
 
       checkGameFinshed: function(){
         //Increase the question number prop counter
         this.$emit("questEmitP3", this.questionNum + 1)
-        //Stops Timer
-        clearTimeout(this.timeout)
+
         if (this.questionNum === 10){
           this.refresh()
           this.$emit("openPage", 4)
