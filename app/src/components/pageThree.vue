@@ -117,7 +117,6 @@
           this.startTime = 20
           this.timerCount = this.startTime
           this.timeout = setInterval(()=>this.updateTimer(), 1000)
-          //this.timeout = setInterval(()=>this.updateTimer(), 1000)
         }else if (this.difficulty === 2){
           this.startTime = 10
           this.timerCount = this.startTime
@@ -193,13 +192,13 @@
             this.$emit("scoreEmitP3", this.score + 1)
             //Play 'Success' Sound
             new Audio(
-              "https://suraj.codes/dist/assets/cdn/audio/success.wav").play();
+              "https://suraj.codes/dist/assets/cdn/audio/success.wav").play()
           }else{
             console.log("Incorrect!\nAnswer: ", this.answer)
             this.msg = "Incorrect! Answer is " + this.answer
             //Play 'Fail' Sound
             new Audio(
-              "https://suraj.codes/dist/assets/cdn/audio/fail.wav").play();
+              "https://suraj.codes/dist/assets/cdn/audio/fail.wav").play()
           }
         }
       },
